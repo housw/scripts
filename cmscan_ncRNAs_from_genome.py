@@ -1,5 +1,20 @@
 #!/usr/bin/python
 
+# Copyright (C) 2019  Shengwei Hou : housw2010 'at' gmail 'dot' com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 import os
 import sys
@@ -49,8 +64,8 @@ def main():
     # main parser
     parser = argparse.ArgumentParser(description="scan ncRNAs against rfam using cmscan for input genome in fasta format")
     parser.add_argument("input_fna", help="input genome in fasta format")
-    parser.add_argument("--path_to_rfam_cm", default="/home/shengwei/db/Rfam/current/Rfam.cm", help="absolute path to rfam.cm")
-    parser.add_argument("--path_to_rfam_clanin", default="/home/shengwei/db/Rfam/current/Rfam.clanin", help="absolute path to rfam.clanin")
+    parser.add_argument("--rfam_cm", default="/home/shengwei/db/Rfam/current/Rfam.cm", help="absolute path to rfam.cm")
+    parser.add_argument("--rfam_clanin", default="/home/shengwei/db/Rfam/current/Rfam.clanin", help="absolute path to rfam.clanin")
     parser.add_argument("-p", "--prefix", help="output prefix")
     parser.add_argument("-o", "--output_dir", help="output directory")
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 1.0")
@@ -67,8 +82,9 @@ def main():
         args.output_dir = os.path.dirname(os.path.abspath(args.input_fna))
 
     # do cmscan
-    do_cmscan(args.input_fna, args.path_to_rfam_cm, args.path_to_rfam_clanin, args.output_dir, args.prefix)    
+    do_cmscan(args.input_fna, args.rfam_cm, args.rfam_clanin, args.output_dir, args.prefix)    
 
 
 if __name__ == "__main__":
     main()
+
