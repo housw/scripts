@@ -31,13 +31,22 @@ def do_cmscan(input_fna, rfam_cm, rfam_clanin, output_dir, prefix):
     # output 
     output_prefix = os.path.join(output_dir, prefix)
 
-    # compute database size
-    # For the purposes of Infernal, the total database size is the number of nucleotides that will be searched, in units of megabases (Mb, millions of nucleotides). So, it is the total number of nucleotides in all sequences that make up the genome, multiplied by two (because both strands will be searched), and divided by 1,000,000 (to convert to millions of nucleotides).
+    # compute database size in Mb
+    # genomesize * 2 / 1,000,000
     database_size = 0
     for contig in SeqIO.parse(input_fna, "fasta"):
         contig_size = len(contig.seq)
         database_size += contig_size 
     database_size = (2 * database_size) / 1000000.0
+
+    # cmpress if not
+    if not os.path.exists(rfam_cm+".i1m"):
+        try:
+            cmpress_proc = subprocess.Popen(['cmpress', rfam_cm])
+            cmpress_proc.wait()
+        except Exception as e:
+            print("Can't run cmpress on input rfam.cm:\n\t{err}".format(err=e))
+            raise 
 
     # run cmscan
     try:
@@ -56,13 +65,13 @@ def do_cmscan(input_fna, rfam_cm, rfam_clanin, output_dir, prefix):
                                        ])
         cmscan_proc.wait()
     except Exception as e:
-        print "Can't run cmscan due to the following error:\n\t{err}".format(err=e)
-
+        print("Can't run cmscan due to the following error:\n\t{err}".format(err=e))
+        raise
 
 def main():
 
     # main parser
-    parser = argparse.ArgumentParser(description="scan ncRNAs against rfam using cmscan for input genome in fasta format")
+    parser = argparse.ArgumentParser(description="scan ncRNAs against rfam using cmscan (requires infernal v1.1.2) for input genome in fasta format")
     parser.add_argument("input_fna", help="input genome in fasta format")
     parser.add_argument("--rfam_cm", default="/home/shengwei/db/Rfam/current/Rfam.cm", help="absolute path to rfam.cm")
     parser.add_argument("--rfam_clanin", default="/home/shengwei/db/Rfam/current/Rfam.clanin", help="absolute path to rfam.clanin")
