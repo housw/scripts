@@ -1,17 +1,22 @@
 #!/usr/bin/env python
+# Copyright (C) 2016  Shengwei Hou
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-import sys, os
+import os
+import sys
 import argparse
 from Bio import SeqIO
-
-
-# 0      1                     2        3                    4         5      6     7          8      9         10     11    12   13     14   15    16       17
-#idx target_name          accession query_name           accession clan_name mdl mdl_from   mdl_to seq_from   seq_to strand trunc pass   gc  bias  score   E-value inc olp anyidx afrct1 afrct2 winidx wfrct1 wfrct2 description of target
-#--- -------------------- --------- -------------------- --------- --------- --- -------- -------- -------- -------- ------ ----- ---- ---- ----- ------ --------- --- --- ------ ------ ------ ------ ------ ------ ---------------------
-#1    tmRNA                RF00023   1920                 -         CL00001    cm        1      354    11198    11552      +    no    1 0.42   0.0  178.3     1e-52  !   *       -      -      -      -      -      - -
-#2    tRNA                 RF00005   1396                 -         CL00001    cm        1       71     4327     4409      +    no    1 0.57   0.0   53.8   1.5e-11  !   *       -      -      -      -      -      - -
-#1    RNaseP_bact_a        RF00010   4341                 -         CL00002    cm        1      367    11276    10944      -    no    1 0.47   0.0  311.4  6.1e-102  !   *       -      -      -      -      -      - -
 
 
 class CmscanTbl(object):
@@ -39,7 +44,6 @@ class CmscanTbl(object):
             ret_seq = seq_record[self.query_to-1:self.query_from].reverse_complement()
         
         return ret_seq
-
 
     def __str__(self):
         return self.ncRNA_name +"\t"+ self.ncRNA_accession +"\t"+ \
@@ -86,8 +90,7 @@ def parse_cmscan_tblout(cmscan_tblout_file):
                             mdl_from, mdl_to, query_name, query_from, query_to, query_strand, score, evalue)
 
 
-
-def get_fasta_from_cmscan_tblout_result(cmscan_domtblout, query_fasta, 
+def get_fasta_from_cmscan_tblout_result(cmscan_domtblout, query_fasta,
                                     out_file, evalue_cutoff=1e-10, 
                                     name_list=[], accession_list=[]):
     """given a query fasta, and cmscan_domtblout, find the hits for each
@@ -163,7 +166,6 @@ def main():
     # get fasta from cmscan result
     get_fasta_from_cmscan_tblout_result(args.input_cmscan_tblout, args.input_query_fasta,
                                     out_file, args.evalue_cutoff, args.name_list, args.accession_list)
-
 
 
 if __name__ == "__main__":
