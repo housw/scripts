@@ -71,7 +71,6 @@ class FastqcReadCounter(ReadCounter):
         return count
 
 
-
 class CounterDispatcher(ReadCounter):
 
     counter_map = {"fasta":FastaReadCounter,
@@ -178,8 +177,6 @@ def main():
         counter = CounterDispatcher(args.input_file, format, compress_type)
         counter.count_read_number()
         oh.write(str(counter) + '\n')
-
-
 
 
 if __name__ == "__main__":
