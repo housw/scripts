@@ -69,7 +69,7 @@ def get_kmer_frequencies_for_contigs(input_kmer_count_file, output_file):
     """ divide each kmer count by the sum of kmer counts in each row
     """
 
-    kmercount = pd.read_csv('test_KmerCount.tsv', sep='\t', header=0, index_col=0)
+    kmercount = pd.read_csv(input_kmer_count_file, sep='\t', header=0, index_col=0)
     kmerfreq = kmercount.div(kmercount.sum(axis=1), axis=0)
     kmerfreq.to_csv(output_file, sep="\t", header=True, index=True)
 
