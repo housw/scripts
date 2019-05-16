@@ -24,11 +24,11 @@ import subprocess
 
 class ReadCounter(object):
 
-    _grep_map = {"none":"grep",
-                "gz":"zgrep",
-                "zip":"zgrep",
-                "bz2":"bzgrep"
-                }
+    _grep_map = {"none": "grep",
+                 "gz": "zgrep",
+                 "zip": "zgrep",
+                 "bz2": "bzgrep"
+                 }
 
     def __init__(self, input_file, format, compress_type):
         self.input_file = input_file
@@ -60,7 +60,7 @@ class FastqcReadCounter(ReadCounter):
     def count_read_number(self):
         if self.compress_type == "zip":
             fastqc_zip = self.input_file
-            fastqc_folder=fastqc_zip.rstrip(".zip")
+            fastqc_folder = fastqc_zip.rstrip(".zip")
             cmd = "unzip -c {fastqc_zip} {fastqc_folder}/fastqc_data.txt | grep '^Total Sequences'".format(
                 fastqc_zip=fastqc_zip, fastqc_folder=fastqc_folder)
         else:
@@ -73,9 +73,9 @@ class FastqcReadCounter(ReadCounter):
 
 class CounterDispatcher(ReadCounter):
 
-    counter_map = {"fasta":FastaReadCounter,
-                   "fastq":FastqReadCounter,
-                   "fastqc":FastqcReadCounter
+    counter_map = {"fasta": FastaReadCounter,
+                   "fastq": FastqReadCounter,
+                   "fastqc": FastqcReadCounter
                    }
 
     def __init__(self, input_file, format, compress_type):
@@ -127,9 +127,9 @@ def main():
 
     # compress_type handeling
     compress_type = args.compress_type
-    compress_map = { "gz": "gz", "gzip":"gz",
-                     "bz2": "bz2", "bzip2": "bz2",
-                     "zip": "zip"}
+    compress_map = {"gz": "gz", "gzip": "gz",
+                    "bz2": "bz2", "bzip2": "bz2",
+                    "zip": "zip"}
     if compress_type == "infer":
         if suffix in compress_map:
             compress_type = compress_map.get(suffix)
@@ -137,9 +137,9 @@ def main():
             compress_type = "none"
 
     # input file format handeling
-    format_map = { "fa": "fasta", "fas": "fasta", "fasta": "fasta", "fna": "fasta", "faa": "fasta",
-                   "fq": "fastq", "fastq": "fastq",
-                   "fastqc": "fastqc"}
+    format_map = {"fa": "fasta", "fas": "fasta", "fasta": "fasta", "fna": "fasta", "faa": "fasta",
+                  "fq": "fastq", "fastq": "fastq",
+                  "fastqc": "fastqc"}
     format = args.format
     if format == "infer":
         if "fastqc" in args.input_file:
